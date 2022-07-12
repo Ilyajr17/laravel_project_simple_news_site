@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -11,6 +12,13 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function logout()
+    {
+        auth('web')->logout();
+
+        return redirect(route('home'));
+    }
+
     public function showRegisterForm()
     {
         return view('auth.register');
@@ -18,10 +26,23 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'string', 'unique:users'],
             'password' => ['required', 'confirmed']
         ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password'])
+        ]);
+
+        if ($user) {
+            auth('web')->login($user);
+        }
+
+        return redirect(route('home'));
+
     }
 }
