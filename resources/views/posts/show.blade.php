@@ -20,7 +20,9 @@
 
             <div>
                 <section class="rounded-b-lg mt-4">
-                    <form>
+                    <form action="{{ route('comment', $post->id) }}" method="POST">
+                        @csrf
+                        
                         <textarea class="w-full shadow-inner p-4 border-0 mb-4 rounded-lg focus:shadow-outline text-2xl" placeholder="Ваш комментарий..." spellcheck="false"></textarea>
                         <button type="submit" class="font-bold py-2 px-4 w-full bg-purple-400 text-lg text-white shadow-md rounded-lg ">Написать </button>
                     </form>

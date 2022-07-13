@@ -24,7 +24,14 @@ class CommentForm extends FormRequest
     public function rules()
     {
         return [
-            //
+            'text' => ['required', 'string', 'min:5']
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => auth('web')->id()
+        ]);
     }
 }
