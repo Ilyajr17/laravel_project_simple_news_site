@@ -10,14 +10,14 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'preview',
-        'description',
-        'thumbnail'
+        "title",
+        "description",
+        "preview",
+        "thumbnail",
     ];
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->orderBy('created_at');
+        return $this->hasMany(Comment::class)->orderBy("created_at");
     }
 }
