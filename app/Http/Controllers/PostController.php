@@ -28,6 +28,10 @@ class PostController extends Controller
 
     public function comment($id, CommentForm $request) 
     {
-        
+        $post = Post::findOrFail($id);
+
+        $post->comments()->create($request->validate());
+
+        return redirect(route('posts.show', $id));
     }
 }
