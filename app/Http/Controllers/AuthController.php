@@ -38,6 +38,20 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function showForgotForm()
+    {
+        return view('auth.forgot');
+    }
+
+    public function forgot(Request $request)
+    {
+        $data = $request->validate([
+            'email' => ['required', 'email', 'string', 'exists:users']
+        ]);
+
+        $user = User::where(['email' => $data['email']]) ->first();
+    }
+
     public function register(Request $request)
     {
         $data = $request->validate([
