@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Addmin\PostFormRequest;
 use App\Models\AdminUser;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.posts.create", []);
     }
 
     /**
@@ -39,9 +40,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostFormRequest $request)
     {
-        //
+        Post::create($request->validated());
+
+        return redirect(route("admin.posts.index"));
     }
 
     /**
