@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminUser;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +16,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $users = AdminUser::orderBy("created_at", "DESC")->paginate(3);
+
+        return view("admin.admin_users.index", [
+            "users" => $users,
+        ]);
     }
 
     /**
@@ -80,6 +86,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        AdminUser::destroy($id);
+
+        return redirect(route("admin.admin_users.index"));
     }
 }
