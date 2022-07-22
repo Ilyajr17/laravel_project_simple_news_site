@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPassword;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -22,7 +24,7 @@ class AuthController extends Controller
         if (auth('web')->attempt($data)) {
             return redirect(route('home'));
         }
-    
+
         return redirect(route('login'))->withErrors(["email" => "Пользователь не найден, либо данные введены не правильно"]);
     }
 
@@ -49,7 +51,16 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'string', 'exists:users']
         ]);
 
-        $user = User::where(['email' => $data['email']]) ->first();
+        $user = User::where(['email' => $data['email']])->first();
+
+        $password = uniqid();
+
+        $user->password = bcrypt($password);
+        $user->save();
+
+        Mail::to($user)->send(new ForgotPassword($password));
+
+        return redirect(route('home'));
     }
 
     public function register(Request $request)
@@ -71,6 +82,5 @@ class AuthController extends Controller
         }
 
         return redirect(route('home'));
-
     }
 }
