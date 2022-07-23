@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create", []);
+        
     }
 
     /**
@@ -37,9 +37,7 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
-        Post::create($request->validated());
-
-        return redirect(route("admin.posts.index"));
+        
     }
 
     /**
@@ -84,8 +82,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        AdminUser::destroy($id);
-
-        return redirect(route("admin.admin_users.index"));
+        
     }
 }
