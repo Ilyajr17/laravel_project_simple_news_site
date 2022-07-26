@@ -43,7 +43,19 @@ class PostController extends Controller
      */
     public function store(PostFormReq $request)
     {
-        $post = Post::create($request->validated());
+        // $post = Post::create($request->validated());
+
+        // return redirect(route('admin.posts.index'));
+
+        $data = $request->validated();
+
+        if ($request->has('thumbnail')) {
+            $thumbnail = str_replace('public/posts', '', $request->file('thumbnail')->store('public/posts'));
+            $data['thumbnail'] = $thumbnail;
+        }
+        // $post = new Post();
+        Post::create($data);
+        // $post->create($data);
 
         return redirect(route('admin.posts.index'));
     }
@@ -67,7 +79,11 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        return view('admin.posts.create', [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -77,9 +93,20 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostFormReq $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $data = $request->validated();
+
+        if ($request->has('thumbnail')) {
+            $thumbnail = str_replace('public/posts', '', $request->file('thumbnail')->store('public/posts'));
+            $data['thumbnail'] = $thumbnail;
+        }
+
+        $post->update($data);
+
+        return redirect(route('admin.posts.index'));
     }
 
     /**
@@ -89,7 +116,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
+    {
         Post::destroy($id);
 
         return redirect(route('admin.posts.index'));
