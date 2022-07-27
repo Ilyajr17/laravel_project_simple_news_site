@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\PostController;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,5 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth:admin')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('posts', PostController::class);
+    Route::resource('users', AdminUserController::class);
 });

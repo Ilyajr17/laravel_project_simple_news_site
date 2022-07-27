@@ -53,9 +53,8 @@ class PostController extends Controller
             $thumbnail = str_replace('public/posts', '', $request->file('thumbnail')->store('public/posts'));
             $data['thumbnail'] = $thumbnail;
         }
-        // $post = new Post();
+
         Post::create($data);
-        // $post->create($data);
 
         return redirect(route('admin.posts.index'));
     }
